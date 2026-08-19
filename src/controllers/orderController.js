@@ -10,11 +10,17 @@ export async function createOrder(req, res) {
             return res.status(400).json({ message: 'Tu carrito está vacío.' })
         }
 
-        const items = cart.items.map((item) => ({
-            product: item.product._id,
-            quantity: item.quantity,
-            price: item.product.price,
-        }))
+        const items = cart.items
+            .filter((item) => item.product)
+            .map((item) => ({
+                product: item.product._id,
+                quantity: item.quantity,
+                price: item.product.price,
+            }))
+
+        if (items.length === 0) {
+            return res.status(400).json({ message: 'Tu carrito tiene productos que ya no existen. Agrégalos de nuevo.' })
+        }
 
         const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
 
