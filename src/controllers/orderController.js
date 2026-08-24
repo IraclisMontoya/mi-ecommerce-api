@@ -3,8 +3,7 @@ import Cart from '../models/Cart.js'
 
 export async function createOrder(req, res) {
     try {
-        const { shippingAddress } = req.body
-
+        const { shippingAddress, paymentMethod, paymentReference } = req.body
         const cart = await Cart.findOne({ user: req.user.id }).populate('items.product')
         if (!cart || cart.items.length === 0) {
             return res.status(400).json({ message: 'Tu carrito está vacío.' })
@@ -29,6 +28,8 @@ export async function createOrder(req, res) {
             items,
             total,
             shippingAddress,
+            paymentMethod,
+            paymentReference,
         })
 
         cart.items = []

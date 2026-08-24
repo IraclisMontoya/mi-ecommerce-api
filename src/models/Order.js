@@ -18,6 +18,8 @@ const orderSchema = new mongoose.Schema(
             zip: { type: String, required: true },
             phone: { type: String, required: true },
         },
+        paymentMethod: { type: String, enum: ['tarjeta', 'paypal', 'applepay', 'oxxo'], required: true },
+        paymentReference: { type: String },
         status: { type: String, enum: ['pendiente', 'pagado', 'enviado', 'entregado'], default: 'pendiente' },
     },
     { timestamps: true }
